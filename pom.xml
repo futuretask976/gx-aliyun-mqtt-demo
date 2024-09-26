@@ -1,0 +1,209 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.13</version>
+        <relativePath/>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.miya</groupId>
+    <artifactId>gx.alyun.mqtt.demo</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>gx-alyun-mqtt-demo</name>
+    <description>gx-alyun-mqtt-demo</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-antrun.version>11</maven-antrun.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <logback.configurationFile>src/main/resources/logback.xml</logback.configurationFile>
+    </properties>
+
+    <modules>
+        <module>client-sdk</module>
+        <module>server-sdk</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- spring start -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>2.4.13</version>
+            </dependency>
+            <!-- spring end -->
+
+            <!-- apache start -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
+            </dependency>
+            <!-- apache end -->
+
+            <!-- alibaba start -->
+            <dependency>
+                <groupId>com.alibaba.mqtt</groupId>
+                <artifactId>server-sdk</artifactId>
+                <version>1.0.8.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.1.46.sec01</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>4.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>ons-client</artifactId>
+                <version>1.7.9.Final</version>
+            </dependency>
+            <!-- 如果使用的是Java 9及以上的版本，则需要添加JAXB相关依赖 -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <!-- no more than 2.3.3-->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+            <!-- alibaba end -->
+
+            <!-- others start -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>1.70</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+                <version>1.2.2</version>
+            </dependency>
+            <dependency>
+                <groupId> com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.22</version>
+            </dependency>
+            <!-- others end -->
+        </dependencies>
+    </dependencyManagement>
+
+	<build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.40.2</version>
+                    <executions>
+                        <!--如果想在项目打包时构建镜像添加-->
+                        <execution>
+                            <id>build-image</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- Docker 远程管理地址-->
+                        <dockerHost>http://localhost:2375</dockerHost>
+                        <images>
+                            <image>
+                                <!--定义镜像名称-->
+                                <name>teamachine-backend/${project.name}:${project.version}</name>
+<!--                                <run>-->
+<!--                                    <cmd>-->
+<!--                                        <exec>-->
+<!--                                            <args>sh</args>-->
+<!--                                            <args>-c</args>-->
+<!--                                            <args>microdnf install yum</args>-->
+<!--                                        </exec>-->
+<!--                                    </cmd>-->
+<!--                                </run>-->
+                                <!--定义镜像构建行为-->
+                                <build>
+                                    <!--定义基础镜像-->
+                                    <from>openjdk:11</from>
+                                    <args>
+                                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                                    </args>
+                                    <!--定义哪些文件拷贝到容器中-->
+                                    <assembly>
+                                        <!--定义拷贝到容器的目录-->
+                                        <targetDir>/</targetDir>
+                                        <!--只拷贝生成的jar包-->
+                                        <descriptorRef>artifact</descriptorRef>
+                                    </assembly>
+                                    <!--定义容器启动命令-->
+                                    <entryPoint>["java", "--add-opens", "java.base/java.lang=ALL-UNNAMED", "-jar","-Dspring.profiles.active=prod", "/${project.build.finalName}.jar"]</entryPoint>
+                                    <!--定义维护者-->
+                                    <maintainer>米亚</maintainer>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+        </resources>
+	</build>
+</project>
