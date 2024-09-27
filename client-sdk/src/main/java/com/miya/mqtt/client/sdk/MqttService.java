@@ -120,14 +120,12 @@ public class MqttService implements InitializingBean {
 
     private String[] getTopicFilters() {
         return new String[]{
-                // MqttConsts.DEMO_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "broadcast"
-                // MqttConsts.DEMO_P2P_TOPIC_POSTFIX + MqttConsts.TOPIC_SEPERATOR + "receive001"
-                MqttConsts.TENANT_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "s2m" + MqttConsts.TOPIC_SEPERATOR+ "gxAliyunMqttDemo"
+                MqttConsts.TENANT_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "broadcast"
         };
     }
 
     private int[] getQos() {
-        return new int[]{
+        return new int[] {
                 MqttConfig.QOS_LEVEL
         };
     }
