@@ -2,10 +2,10 @@ package com.miya.mqtt.client.sdk;
 
 import com.miya.mqtt.client.sdk.wrapper.ConnectionOptionWrapper;
 import com.miya.mqtt.client.sdk.concurrent.ExeService4Publish;
-import com.miya.mqtt.client.sdk.constant.MqttConsts;
 import com.miya.mqtt.client.sdk.util.MqttUtils;
 import com.miya.mqtt.config.MqttClientConfig;
 import com.miya.mqtt.config.MqttConfig;
+import com.miya.mqtt.config.MqttServerConfig;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.InitializingBean;
@@ -125,7 +125,7 @@ public class MqttClientService implements InitializingBean {
 
     private String[] getTopicFilters() {
         return new String[]{
-                MqttConsts.TENANT_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "broadcast"
+                MqttServerConfig.BROADCAST_TOPIC
         };
     }
 

@@ -1,44 +1,14 @@
 package com.miya.mqtt.client.sdk.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.miya.mqtt.client.sdk.constant.MqttConsts;
+import com.miya.mqtt.config.MqttConfig;
+import com.miya.mqtt.config.MqttServerConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.*;
 
 /**
@@ -47,11 +17,11 @@ import java.util.*;
 @Slf4j
 public class MqttUtils {
     public static String getTestTopic() {
-        return MqttConsts.DEMO_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "console";
+        return MqttServerConfig.PARENT_TOPIC + MqttConfig.TOPIC_SEPERATOR + "console";
     }
 
     public static String getP2PTopic(String tenantCode, String machineCode) {
-        return tenantCode + MqttConsts.DEMO_P2P_TOPIC_POSTFIX + MqttConsts.TOPIC_SEPERATOR + machineCode;
+        return MqttServerConfig.P2P_TOPIC + MqttConfig.TOPIC_SEPERATOR + machineCode;
     }
 
     /**
