@@ -1,10 +1,11 @@
 package com.miya.mqtt.client.sdk;
 
 import com.miya.mqtt.client.sdk.wrapper.ConnectionOptionWrapper;
-import com.miya.mqtt.client.sdk.config.MqttConfig;
 import com.miya.mqtt.client.sdk.concurrent.ExeService4Publish;
 import com.miya.mqtt.client.sdk.constant.MqttConsts;
 import com.miya.mqtt.client.sdk.util.MqttUtils;
+import com.miya.mqtt.config.MqttClientConfig;
+import com.miya.mqtt.config.MqttConfig;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,16 +18,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class MqttService implements InitializingBean {
+public class MqttClientService implements InitializingBean {
     /**
      * MQTT客户端
      */
-    private MqttClient mqttClient;
+    private org.eclipse.paho.client.mqttv3.MqttClient mqttClient;
 
     @Override
     public void afterPropertiesSet() throws MqttException, NoSuchAlgorithmException, InvalidKeyException {
         if (mqttClient == null) {
-            synchronized (MqttService.class) {
+            synchronized (MqttClientService.class) {
                 if (mqttClient == null) {
                     doInitMqttClient();
                 }
@@ -70,11 +71,11 @@ public class MqttService implements InitializingBean {
     }
 
     private void doInitMqttClient() throws MqttException, NoSuchAlgorithmException, InvalidKeyException {
-        String clientId = MqttConfig.CLIENT_ID;
+        String clientId = MqttClientConfig.CLIENT_ID;
         boolean cleanSession = false;
 
         MemoryPersistence memoryPersistence = new MemoryPersistence();
-        mqttClient = new MqttClient("tcp://" + MqttConfig.ENDPOINT + ":1883",
+        mqttClient = new org.eclipse.paho.client.mqttv3.MqttClient("tcp://" + MqttConfig.ENDPOINT + ":1883",
                 clientId, memoryPersistence);
         // 客户端设置好发送超时时间，防止无限阻塞
         mqttClient.setTimeToWait(MqttConfig.TIME_TO_WAIT);
@@ -111,6 +112,10 @@ public class MqttService implements InitializingBean {
                 System.out.println("mqtt send success: " + iMqttDeliveryToken.getTopics()[0]);
             }
         });
+
+        //Map<String, String> tokenData = new HashMap<String, String>();
+        //tokenData.put("RW", "LzMT+XLFl5s/YWJ/MlDz4t/Lq5HC1iGU1P28HAMaxYzmBSHQsWXgdISJ1ZJ+2cxa/G8rPlXN3FGNjdn2bmgs/9YWdl0jS//fbJGYgJWUr5piesdvDY0i8V1ENftD3MvAgqy5OII7Bl/vooOIjF1CZWKWxif/KoHAERkHVygfiMfiqhAzYZGKHyQgoJWL8b3AwXp1M60Hjp+oi27VLLD/3EnVgGDRZD+d4M0JsnqDQCfWhAVZ1XCLGbqkxBIPOiLA9GMAmYMUCAM477R+Sg86UHi5UJOKP4uydqvyabOF170S2wbZObWHENkwvkpgh2KXQXrpfocrsr2mVqt1V+/oIsCAJgNV4tX7ybNe0hsYT9RKUCfixKKGGS+M3KWrnb8z");
+        //ConnectionOptionWrapper connectionOptionWrapper = new ConnectionOptionWrapper(MqttConfig.INSTANCE_ID, MqttConfig.ACCESS_KEY, clientId, tokenData);
         ConnectionOptionWrapper connectionOptionWrapper = new ConnectionOptionWrapper(MqttConfig.INSTANCE_ID,
                 MqttConfig.ACCESS_KEY, MqttConfig.ACCESS_KEY_SECRET,
                 clientId, cleanSession);
@@ -131,13 +136,13 @@ public class MqttService implements InitializingBean {
     }
 
     public static void main(String args[]) throws Exception {
-        MqttService mqttService = new MqttService();
-        mqttService.doInitMqttClient();
-//        for (int i = 0; i < 15; i++) {
-//            mqttService.sendTestMsg("testMsg=" + getNow());
-//            Thread.sleep(1000 * 1);
-//        }
-        System.out.println("main exiting");
+        MqttClientService mqttPublisher = new MqttClientService();
+        mqttPublisher.doInitMqttClient();
+        //for (int i = 0; i < 1000; i++) {
+        //    mqttPublisher.sendTestMsg("testMsg=" + getNow());
+        //    Thread.sleep(1000);
+        //}
+        //System.out.println("main exiting");
     }
 
     public static String getNow() {

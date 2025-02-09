@@ -6,6 +6,7 @@ import com.alibaba.mqtt.server.callback.MessageListener;
 import com.alibaba.mqtt.server.config.ChannelConfig;
 import com.alibaba.mqtt.server.config.ConsumerConfig;
 import com.alibaba.mqtt.server.model.MessageProperties;
+import com.miya.mqtt.config.MqttConfig;
 import com.miya.mqtt.server.sdk.constant.MqttConsts;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class MqttConsumerDemo {
              * 设置云端SDK的接入点，请参见接入点说明中的云端SDK接入点格式。
              * 接入点地址必须填写分配的域名，不得使用IP地址直接连接，否则可能会导致服务端异常。
              */
-            String domain = MqttConsts.ENDPOINT;
+            String domain = MqttConfig.ENDPOINT;
 
             /**
              * 使用的协议和端口必须匹配，该参数值固定为5672。
@@ -45,7 +46,7 @@ public class MqttConsumerDemo {
             /**
              * 您创建的云消息队列 MQTT 版的实例ID。
              */
-            String instanceId = MqttConsts.INSTANCE_ID;
+            String instanceId = MqttConfig.INSTANCE_ID;
 
             /**
              * AccessKey ID，阿里云身份验证，在阿里云RAM控制台创建。
@@ -53,11 +54,11 @@ public class MqttConsumerDemo {
              * 强烈建议不要把AccessKey ID和AccessKey Secret保存到工程代码里，否则可能导致AccessKey泄露，威胁您账号下所有资源的安全。
              * 本示例以将AccessKey 和 AccessKeySecret 保存在环境变量为例说明。
              */
-            String accessKey = MqttConsts.ACCESS_KEY; // System.getenv("MQTT_AK_ENV");
+            String accessKey = MqttConfig.ACCESS_KEY; // System.getenv("MQTT_AK_ENV");
             /**
              * AccessKey Secret，阿里云身份验证，在阿里云RAM控制台创建。仅在签名鉴权模式下需要设置。
              */
-            String secretKey = MqttConsts.ACCESS_KEY_SECRET; // System.getenv("MQTT_SK_ENV");
+            String secretKey = MqttConfig.ACCESS_KEY_SECRET; // System.getenv("MQTT_SK_ENV");
 
             /**
              * 云消息队列 MQTT 版消息的一级Topic，需要在控制台创建才能使用。

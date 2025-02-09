@@ -1,4 +1,4 @@
-package com.miya.mqtt.client.sdk.config;
+package com.miya.mqtt.config;
 
 public class MqttConfig {
     /**
@@ -19,12 +19,12 @@ public class MqttConfig {
      *      export MQTT_SK_ENV=<access_key_secret>
      * 需要将<access_key_id>替换为已准备好的AccessKey ID，<access_key_secret>替换为AccessKey Secret。
      */
-    public static final String ACCESS_KEY = "LTAI5t6hg6snjTBEddAP8tz8"; // System.getenv("MQTT_AK_ENV");
+    public static final String ACCESS_KEY = "LTAI5tEYPxx5c3uqWR1kN88w"; // System.getenv("MQTT_AK_ENV");
 
     /**
      * 账号 secretKey，从账号系统控制台获取，仅在Signature鉴权模式下需要设置
      */
-    public static final String ACCESS_KEY_SECRET = "MammwnIOPrHe9AAO4CnaUJwmIG96Kc"; // System.getenv("MQTT_SK_ENV");
+    public static final String ACCESS_KEY_SECRET = "RnbuAmt9dtOPJZEndfjiMKqqmtOXnP"; // System.getenv("MQTT_SK_ENV");
 
     /**
      * QoS参数代表传输质量，可选0，1，2，根据实际需求合理设置，具体参考 https://help.aliyun.com/document_detail/42420.html?spm=a2c4g.11186623.6.544.1ea529cfAO5zV3
@@ -32,13 +32,12 @@ public class MqttConfig {
     public static final int QOS_LEVEL = 1;
 
     /**
-     * MQ4IOT clientId，由业务系统分配，需要保证每个 tcp 连接都不一样，保证全局唯一，如果不同的客户端对象（tcp 连接）使用了相同的 clientId 会导致连接异常断开。
-     * clientId 由两部分组成，格式为 GroupID@@@DeviceId，其中 groupId 在 MQ4IOT 控制台申请，DeviceId 由业务方自己设置，clientId 总长度不得超过64个字符。
-     */
-    public static final String CLIENT_ID = "GID_TEAMACHINE@@@gxAliyunMqttDemo";
-
-    /**
      * 超时时长
      */
     public static final int TIME_TO_WAIT = 5000;
+
+    /**
+     * topic 分隔符
+     */
+    public static final String TOPIC_SEPERATOR = "/";
 }

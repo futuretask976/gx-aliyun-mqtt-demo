@@ -47,7 +47,7 @@ import java.util.*;
 @Slf4j
 public class MqttUtils {
     public static String getTestTopic() {
-        return MqttConsts.DEMO_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "test";
+        return MqttConsts.DEMO_PARENT_TOPIC + MqttConsts.TOPIC_SEPERATOR + "console";
     }
 
     public static String getP2PTopic(String tenantCode, String machineCode) {

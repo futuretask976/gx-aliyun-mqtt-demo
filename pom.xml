@@ -26,6 +26,7 @@
     </properties>
 
     <modules>
+        <module>common-config</module>
         <module>client-sdk</module>
         <module>server-sdk</module>
     </modules>
